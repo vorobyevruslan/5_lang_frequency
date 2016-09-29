@@ -1,24 +1,32 @@
+import re
+
+
 def load_data(filepath):
-    a=[]
-    with open(filepath) as iner:
-        for line in iner:
-            a+=line.split()
-    return a
+    list_of_words = []
+    with open(filepath) as opened_file:
+        for line in opened_file:
+            list_of_words += re.split(r'[:\.\?\!\*;,_—\[\]\s\d]', line.lower())
+    return list_of_words
+
 
 def get_most_frequent_words(text):
-    d={}
-    for i in text:
-        if i in d:
-            d[i]+=1
-        else:
-            d[i]=1
-    return sorted(d, key=d.__getitem__)
+    vocabulary = {}
+    for word in text:
+        if word != '':
+            if word in vocabulary:
+                vocabulary[word] += 1
+            else:
+                vocabulary[word] = 1
+    return sorted(vocabulary, key=vocabulary.__getitem__)
+
+
+def show_10_words(vocabulary):
+    for index in range(-1,-11,-1):
+        print(vocabulary[index])
+
 
 if __name__ == '__main__':
-    filepath1=input()
-    text=load_data(filepath1)
-    d=get_most_frequent_words(text)
-    for i in range(len(d)):
-        print(d[-i-1])
-        if i==9:
-            break
+    filepath = input()
+    text = load_data(filepath)
+    vocabulary = get_most_frequent_words(text)
+    show_10_words(vocabulary)
